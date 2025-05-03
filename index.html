@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skor Hesaplama Formu</title>
+    <style>
+      body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e9ecef;
+  margin: 20px;
+  color: #333;
+}
+
+form {
+  max-width: 800px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  position: relative; /* Formu tam hizalamak için */
+}
+
+h1 {
+  font-size: 28px;
+  color: #363636; /* Başlık rengini #363636 yaptık */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-row {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #495057;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+input[type="range"] {
+  width: 50%;
+  margin-top: 10px;
+  appearance: none;
+  height: 5px;
+  background: #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  background-color: #ff6347;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background-color: #ff6347;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-thumb {
+  background-color: #ff6347;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.slider-value {
+  font-size: 16px;
+  color: #6c757d;
+  margin-left: 10px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background-color: #cd853f; /* Buton rengi */
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  left: 0; /* Sol hizalama */
+}
+
+button:hover {
+  background-color: #ee9a00; /* Üstüne gelince buton rengi */
+  box-shadow: 0px 4px 8px rgba(205, 133, 63, 0.3);
+}
+
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Hata Mesajı Stil */
+#error-message {
+  display: none; /* Varsayılan olarak gizli */
+  background-color: #ffdddd;
+  color: #d8000c;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #d8000c;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  animation: fade-in 0.3s ease-in-out;
+}
+
+/* Hata mesajının ortaya çıkışı için animasyon */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Overlay için stil */
+#modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Koyu arka plan */
+  z-index: 999; /* Modalın altında olmalı */
+  display: none; /* Varsayılan olarak gizli */
+}
+
+/* Modal kutusu için stil */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f9f9f9; /* Hafif gri arka plan */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1000; /* Modal overlay'in üstünde olmalı */
+  width: 300px;
+  max-width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal başlık stili */
+.modal-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #333;
+}
+
+/* Modal alt kısım stili */
+.modal-footer {
+  margin-top: 20px;
+}
+
+.modal-footer button {
+  background-color: #cd853f; /* Gönder butonuyla aynı renk */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-footer button:hover {
+  background-color: #ee9a00; /* Gönder butonunun hover rengiyle aynı */
+  box-shadow: 0px 4px 8px rgba(205, 133, 63, 0.3);
+}
+
+/* Fade-in animasyonu */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+#fixedControlPanel {
+  position: fixed;
+  right: 20px;
+  top: 50%; /* Paneli ekranın üstünden aşağıya ortalar */
+  transform: translateY(-50%); /* Ortalanmış panel için denge sağlar */
+  width: 250px; /* Genişliği artırdım */
+  padding: 15px; /* Dolguyu artırarak içerik için daha fazla yer sağladım */
+  background-color: #f1f1f1;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 1000;
+  text-align: center;
+}
+
+/* Kontrol Paneli Karartılmış Stil */
+#fixedControlPanel.dimmed {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff; /* Karartma sırasında yazı rengini beyaz yaparak görünürlüğü artır */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Yumuşak geçiş */
+}
+
+#progress {
+  margin-top: 10px;
+  font-size: 16px; /* Biraz daha büyük yaptım */
+  font-weight: bold;
+  color: #495057;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#panel-message {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5; /* Satır yüksekliğini artırdım */
+  overflow: hidden;
+  white-space: normal; /* Normal olarak ayarladım, satırlar gerektiğinde kaydırılacak */
+  text-align: center;
+}
+
+/* Hata ve Başarı Mesajları */
+#panel-message.error {
+  color: #d8000c;
+}
+
+#panel-message.success {
+  color: #28a745;
+}
+    </style>
+  </head>
+  <body>
+    <h1>Skor Hesaplama Formu</h1>
+    <form id="scoreForm">
+      <!-- Toplam Nüfus Skor Katsayısı -->
+      <div class="form-row">
+        <label for="Toplam_Nüfus_Skor_Katsayısı_Giriniz"
+          >Toplam Nüfus Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Toplam_Nüfus_Skor_Katsayısı_Giriniz"
+          name="Toplam_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Toplam_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Toplam_Nüfus_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Toplam_Nüfus_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Toplam Erkek Nüfus Skor Katsayı  -->
+      <div class="form-row">
+        <label for="Toplam_Erkek_Nüfus_Skor_Katsayı_Giriniz"
+          >Toplam Erkek Nüfus Skor Katsayı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Toplam_Erkek_Nüfus_Skor_Katsayı_Giriniz"
+          name="Toplam_Erkek_Nüfus_Skor_Katsayı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Toplam_Erkek_Nüfus_Skor_Katsayı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Toplam_Erkek_Nüfus_Skor_Katsayı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Toplam_Erkek_Nüfus_Skor_Katsayı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Toplam Kadın Nüfus Skor Katsayısı -->
+      <div class="form-row">
+        <label for="Toplam_Kadın_Nüfus_Skor_Katsayısı_Giriniz"
+          >Toplam Kadın Nüfus Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Toplam_Kadın_Nüfus_Skor_Katsayısı_Giriniz"
+          name="Toplam_Kadın_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Toplam_Kadın_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Toplam_Kadın_Nüfus_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Toplam_Kadın_Nüfus_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Alım Gücü Endeksi Skor Katsayısı -->
+      <div class="form-row">
+        <label for="Alım_Gücü_Endeksi_Skor_Katsayısı_Giriniz"
+          >Alım Gücü Endeksi Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Alım_Gücü_Endeksi_Skor_Katsayısı_Giriniz"
+          name="Alım_Gücü_Endeksi_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Alım_Gücü_Endeksi_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Alım_Gücü_Endeksi_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Alım_Gücü_Endeksi_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Toplam Alım Gücü Skor Katsayısı -->
+      <div class="form-row">
+        <label for="Toplam_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          >Toplam Alım Gücü Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Toplam_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          name="Toplam_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Toplam_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Toplam_Alım_Gücü_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Toplam_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Kişi Başına Alım Gücü Skor Katsayısı -->
+      <div class="form-row">
+        <label for="Kişi_Başına_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          >Kişi Başına Alım Gücü Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Kişi_Başına_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          name="Kişi_Başına_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Kişi_Başına_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Kişi_Başına_Alım_Gücü_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Kişi_Başına_Alım_Gücü_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- İşsiz Nüfus Skor Katsayısı -->
+      <div class="form-row">
+        <label for="İşsiz_Nüfus_Skor_Katsayısı_Giriniz"
+          >İşsiz Nüfus Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="İşsiz_Nüfus_Skor_Katsayısı_Giriniz"
+          name="İşsiz_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_İşsiz_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('İşsiz_Nüfus_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_İşsiz_Nüfus_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Bekar Nüfus Skor Katsayısı -->
+      <div class="form-row">
+        <label for="Bekar_Nüfus_Skor_Katsayısı_Giriniz"
+          >Bekar Nüfus Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Bekar_Nüfus_Skor_Katsayısı_Giriniz"
+          name="Bekar_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Bekar_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0.01"
+          step="0.01"
+          min="0.01"
+          max="100"
+          oninput="syncValues('Bekar_Nüfus_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Bekar_Nüfus_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Evli Nüfus Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Evli_Nüfus_Skor_Katsayısı_Giriniz"
+          >Evli Nüfus Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Evli_Nüfus_Skor_Katsayısı_Giriniz"
+          name="Evli_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Evli_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Evli_Nüfus_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Evli_Nüfus_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Boşanmış Nüfus Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Boşanmış_Nüfus_Skor_Katsayısı_Giriniz"
+          >Boşanmış Nüfus Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Boşanmış_Nüfus_Skor_Katsayısı_Giriniz"
+          name="Boşanmış_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Boşanmış_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Boşanmış_Nüfus_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Boşanmış_Nüfus_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Dul Nüfus Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Dul_Nüfus_Skor_Katsayısı_Giriniz"
+          >Dul Nüfus Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Dul_Nüfus_Skor_Katsayısı_Giriniz"
+          name="Dul_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Dul_Nüfus_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Dul_Nüfus_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Dul_Nüfus_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Okuma Yazma Bilmeyen Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Okuma_Yazma_Bilmeyen_Skor_Katsayısı_Giriniz"
+          >Okuma Yazma Bilmeyen Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Okuma_Yazma_Bilmeyen_Skor_Katsayısı_Giriniz"
+          name="Okuma_Yazma_Bilmeyen_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Okuma_Yazma_Bilmeyen_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Okuma_Yazma_Bilmeyen_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Okuma_Yazma_Bilmeyen_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Okuma Yazma Bilen Diplomasız Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Okuma_Yazma_Bilen_Diplomasız_Skor_Katsayısı_Giriniz"
+          >Okuma Yazma Bilen Diplomasız Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Okuma_Yazma_Bilen_Diplomasız_Skor_Katsayısı_Giriniz"
+          name="Okuma_Yazma_Bilen_Diplomasız_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Okuma_Yazma_Bilen_Diplomasız_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Okuma_Yazma_Bilen_Diplomasız_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Okuma_Yazma_Bilen_Diplomasız_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- İlkokul Mezunu Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="İlkokul Mezunu Skor Katsayısı Giriniz"
+          >İlkokul Mezunu Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="İlkokul_Mezunu_Skor_Katsayısı_Giriniz"
+          name="İlkokul_Mezunu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_İlkokul_Mezunu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('İlkokul_Mezunu_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_İlkokul_Mezunu_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Lise Mezunu Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Lise_Mezunu_Skor_Katsayısı_Giriniz"
+          >Lise Mezunu Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Lise_Mezunu_Skor_Katsayısı_Giriniz"
+          name="Lise_Mezunu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Lise_Mezunu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Lise_Mezunu_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Lise_Mezunu_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Yüksek Lisans Mezunu Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Yüksek_Lisans_Mezunu_Skor_Katsayısı_Giriniz"
+          >Yüksek Lisans Mezunu Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Yüksek_Lisans_Mezunu_Skor_Katsayısı_Giriniz"
+          name="Yüksek_Lisans_Mezunu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Yüksek_Lisans_Mezunu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Yüksek_Lisans_Mezunu_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Yüksek_Lisans_Mezunu_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Dokora Mezunu Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Dokora_Mezunu_Skor_Katsayısı_Giriniz"
+          >Doktora Mezunu Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Dokora_Mezunu_Skor_Katsayısı_Giriniz"
+          name="Dokora_Mezunu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Dokora_Mezunu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Dokora_Mezunu_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Dokora_Mezunu_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Bilinmeyen Eğitim Durumu Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Bilinmeyen_Eğitim_Durumu_Skor_Katsayısı_Giriniz"
+          >Bilinmeyen Eğitim Durumu Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Bilinmeyen_Eğitim_Durumu_Skor_Katsayısı_Giriniz"
+          name="Bilinmeyen_Eğitim_Durumu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Bilinmeyen_Eğitim_Durumu_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Bilinmeyen_Eğitim_Durumu_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Bilinmeyen_Eğitim_Durumu_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Gıda İçecek Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Gıda_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          >Gıda İçecek Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Gıda_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Gıda_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Gıda_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Gıda_İçecek_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Gıda_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Elektronik Bilgisayar Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Elektronik_Bilgisayar_Harcaması_Skor_Katsayısı_Giriniz"
+          >Elektronik Bilgisayar Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Elektronik_Bilgisayar_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Elektronik_Bilgisayar_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Elektronik_Bilgisayar_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Elektronik_Bilgisayar_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Elektronik_Bilgisayar_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Kıyafet Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Kıyafet_Harcaması_Skor_Katsayısı_Giriniz"
+          >Kıyafet Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Kıyafet_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Kıyafet_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Kıyafet_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Kıyafet_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Kıyafet_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Alkollü İçecek Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Alkollü_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          >Alkollü İçecek Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Alkollü_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Alkollü_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Alkollü_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Alkollü_İçecek_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Alkollü_İçecek_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Ayakkabı Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Ayakkabı_Harcaması_Skor_Katsayısı_Giriniz"
+          >Ayakkabı Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Ayakkabı_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Ayakkabı_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Ayakkabı_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Ayakkabı_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Ayakkabı_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Tütün Ürünleri Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Tütün_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >Tütün Ürünleri Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Tütün_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Tütün_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Tütün_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Tütün_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Tütün_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Ev Tekstili Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Ev_Tekstili_Harcaması_Skor_Katsayısı_Giriniz"
+          >Ev Tekstili Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Ev_Tekstili_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Ev_Tekstili_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Ev_Tekstili_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Ev_Tekstili_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Ev_Tekstili_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Mobilya Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Mobilya_Harcaması_Skor_Katsayısı_Giriniz"
+          >Mobilya Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Mobilya_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Mobilya_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Mobilya_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Mobilya_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Mobilya_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Ev Aletleri Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Ev_Aletleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >Ev Aletleri Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Ev_Aletleri_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Ev_Aletleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Ev_Aletleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Ev_Aletleri_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Ev_Aletleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Ev Bahçe Malzemeleri Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Ev_Bahçe_Malzemeleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >Ev Bahçe Malzemeleri Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Ev_Bahçe_Malzemeleri_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Ev_Bahçe_Malzemeleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Ev_Bahçe_Malzemeleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Ev_Bahçe_Malzemeleri_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Ev_Bahçe_Malzemeleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Ev Gereçleri Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Ev_Gereçleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >Ev Gereçleri Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Ev_Gereçleri_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Ev_Gereçleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Ev_Gereçleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Ev_Gereçleri_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Ev_Gereçleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Ev Bakım Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Ev_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          >Ev Bakım Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Ev_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Ev_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Ev_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Ev_Bakım_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Ev_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Dayanıklı Rekreasyon Ürünleri Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label
+          for="Dayanıklı_Rekreasyon_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >Dayanıklı Rekreasyon Ürünleri Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Dayanıklı_Rekreasyon_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Dayanıklı_Rekreasyon_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Dayanıklı_Rekreasyon_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Dayanıklı_Rekreasyon_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Dayanıklı_Rekreasyon_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Tıbbi Ürün Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Tıbbi_Ürün_Harcaması_Skor_Katsayısı_Giriniz"
+          >Tıbbi Ürün Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Tıbbi_Ürün_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Tıbbi_Ürün_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Tıbbi_Ürün_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Tıbbi_Ürün_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Tıbbi_Ürün_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Şahsi Bakım Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Şahsi_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          >Şahsi Bakım Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Şahsi_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Şahsi_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Şahsi_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Şahsi_Bakım_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Şahsi_Bakım_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Şahsi Eşya Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Şahsi_Eşya_Harcaması_Skor_Katsayısı_Giriniz"
+          >Şahsi Eşya Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Şahsi_Eşya_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Şahsi_Eşya_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Şahsi_Eşya_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Şahsi_Eşya_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Şahsi_Eşya_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Kitap Kırtasiye Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Kitap_Kırtasiye_Harcaması_Skor_Katsayısı_Giriniz"
+          >Kitap Kırtasiye Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Kitap_Kırtasiye_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Kitap_Kırtasiye_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Kitap_Kırtasiye_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Kitap_Kırtasiye_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Kitap_Kırtasiye_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Yemek Hizmetleri Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Yemek_Hizmetleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >Yemek Hizmetleri Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Yemek_Hizmetleri_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Yemek_Hizmetleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Yemek_Hizmetleri_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Yemek_Hizmetleri_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Yemek_Hizmetleri_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Eğlence Hizmetleri Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Eğlence Hizmetleri Harcaması Skor Katsayısı Giriniz"
+          >Eğlence Hizmetleri Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Eğlence Hizmetleri Harcaması Skor Katsayısı Giriniz"
+          name="Eğlence Hizmetleri Harcaması Skor Katsayısı Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Eğlence Hizmetleri Harcaması Skor Katsayısı Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Eğlence Hizmetleri Harcaması Skor Katsayısı Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Eğlence Hizmetleri Harcaması Skor Katsayısı Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Oyuncak Spor Evcil Hayvan Harcaması Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Oyuncak_Spor_Evcil_Hayvan_Harcaması_Skor_Katsayısı_Giriniz"
+          >Oyuncak Spor Evcil Hayvan Harcaması Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Oyuncak_Spor_Evcil_Hayvan_Harcaması_Skor_Katsayısı_Giriniz"
+          name="Oyuncak_Spor_Evcil_Hayvan_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Oyuncak_Spor_Evcil_Hayvan_Harcaması_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Oyuncak_Spor_Evcil_Hayvan_Harcaması_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Oyuncak_Spor_Evcil_Hayvan_Harcaması_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- İlkokula Giden Öğrenci Sayısı Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="İlkokula_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          >İlkokula Giden Öğrenci Sayısı Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="İlkokula_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          name="İlkokula_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_İlkokula_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('İlkokula_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_İlkokula_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Liseye Giden Öğrenci Sayısı Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Liseye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          >Liseye Giden Öğrenci Sayısı Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Liseye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          name="Liseye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Liseye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Liseye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Liseye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Üniversiteye Giden Öğrenci Sayısı Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Üniversiteye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          >Üniversiteye Giden Öğrenci Sayısı Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Üniversiteye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          name="Üniversiteye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Üniversiteye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Üniversiteye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Üniversiteye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Toplam Erzak Yardım Sayısı Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Toplam_Erzak_Yardım_Sayısı_Skor_Katsayısı_Giriniz"
+          >Toplam Erzak Yardım Sayısı Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Toplam_Erzak_Yardım_Sayısı_Skor_Katsayısı_Giriniz"
+          name="Toplam_Erzak_Yardım_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Toplam_Erzak_Yardım_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Toplam_Erzak_Yardım_Sayısı_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Toplam_Erzak_Yardım_Sayısı_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+
+      <!-- Maski Kesinti Sayısı Skor Katsayısı Giriniz -->
+      <div class="form-row">
+        <label for="Maski_Kesinti_Sayısı_Skor_Katsayısı_Giriniz"
+          >Maski Kesinti Sayısı Skor Katsayısı Giriniz</label
+        >
+        <input
+          type="number"
+          id="Maski_Kesinti_Sayısı_Skor_Katsayısı_Giriniz"
+          name="Maski_Kesinti_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="checkTotal()" />
+        <input
+          type="range"
+          id="slider_Maski_Kesinti_Sayısı_Skor_Katsayısı_Giriniz"
+          value="0"
+          step="0.1"
+          min="-100"
+          max="100"
+          oninput="syncValues('Maski_Kesinti_Sayısı_Skor_Katsayısı_Giriniz', this.value)" />
+        <span
+          class="slider-value"
+          id="slider_value_Maski_Kesinti_Sayısı_Skor_Katsayısı_Giriniz"
+          >0.01</span
+        >
+      </div>
+        <form id="scoreForm">
+          <!-- Sabit Kontrol Paneli -->
+          <div id="fixedControlPanel">
+            <h3>Kontrol Paneli</h3>
+            <div id="progress" class="progress-text">Toplam: 0%</div>
+            <div id="panel-message" style="display:none;">Uyarı mesajı burada görünecek.</div>
+          </div>
+        
+          <!-- Formu Gönderme Butonu -->
+          <button type="submit" id="submitBtn">Çalıştır</button>
+        </form>
+        
+        <!-- Modal Overlay -->
+        <div id="modalOverlay" style="display: none"></div>
+        <script>
+          // **Global Değişkenler**
+let alertShown = false; // Hata mesajının bir kez gösterilmesini kontrol eder.
+let closeTimeout; // Modal kapanması için timeout tanımlanır.
+let jobCompleted = false; // İşin tamamlanıp tamamlanmadığını kontrol eder.
+let intervalId; // Interval ID'yi global tanımladık
+
+// **Input ve Slider Değerlerini Senkronize Etme**
+function syncValues(inputId, value) {
+  const roundedValue = Math.round(value * 10) / 10; // Değeri 1 ondalık basamağa yuvarla
+
+  const inputElement = document.getElementById(inputId);
+  const sliderElement = document.getElementById(`slider_${inputId}`);
+
+  // Değerin minimum ve maksimum sınırları aşıp aşmadığını kontrol et
+  if (roundedValue < inputElement.min) {
+    inputElement.value = inputElement.min;
+    sliderElement.value = inputElement.min;
+  } else if (roundedValue > inputElement.max) {
+    inputElement.value = inputElement.max;
+    sliderElement.value = inputElement.max;
+  } else {
+    inputElement.value = roundedValue;
+    sliderElement.value = roundedValue;
+  }
+
+  // Slider değerini de güncelle
+  document.getElementById(`slider_value_${inputId}`).textContent = roundedValue;
+
+  checkTotal(); // Her değişiklikte toplamı kontrol et
+}
+
+// <-------------------------------------------------------------->
+
+// **Slider ve Input Event Listener'ları**r
+document.querySelectorAll('input[type="number"]').forEach((input) => {
+  input.addEventListener("input", (event) => {
+    const inputId = event.target.id;
+    const value = parseFloat(event.target.value);
+    if (!isNaN(value)) {
+      syncValues(inputId, value);
+    }
+  });
+});
+
+// <----------------------------------------------------------->
+
+// Hata mesajını göstermek için fonksiyon
+function showError(message) {
+  const errorMessageElement = document.getElementById("error-message");
+  errorMessageElement.textContent = message;
+  errorMessageElement.style.display = "block"; // Hata mesajını göster
+}
+
+// Hata mesajını gizlemek için fonksiyon
+function hideError() {
+  const errorMessageElement = document.getElementById("error-message");
+  errorMessageElement.style.display = "none"; // Hata mesajını gizle
+}
+
+// <-------------------------------------------------------------->
+
+// **Toplam Değeri Kontrol Etme**
+function checkTotal() {
+  const inputs = document.querySelectorAll('input[type="number"]');
+  let total = 0;
+
+  inputs.forEach((input) => {
+    total += parseFloat(input.value) || 0;
+  });
+
+  // Toplamı belirli bir hassasiyete göre yuvarla
+  total = parseFloat(total.toFixed(1));
+
+  // Toplam değeri kontrol et ve hataları ortadan kaldır
+  if (Math.abs(total) < 0.1) {
+    total = 0;
+  } else if (Math.abs(total - 100) < 0.1) {
+    total = 100;
+  }
+
+  // Toplam yüzdeyi göster
+  const submitButton = document.getElementById("submitBtn");
+  const progressElement = document.getElementById("progress");
+  const panelMessage = document.getElementById("panel-message");
+
+  if (total > 100) {
+    panelMessage.textContent = "Toplam değer 100'ü geçemez!";
+    panelMessage.className = "error";
+    panelMessage.style.display = "block";
+    submitButton.disabled = true;
+  } else if (total === 100) {
+    panelMessage.textContent = "Toplam değer 100'e eşit! Gönderilmeye hazır.";
+    panelMessage.className = "success";
+    panelMessage.style.display = "block";
+    submitButton.disabled = false;
+  } else {
+    panelMessage.style.display = "none";
+    submitButton.disabled = true;
+  }
+
+  // Yüzde ilerlemesini güncelle
+  progressElement.textContent = `Toplam: ${total}%`;
+
+  return total;
+}
+
+// <-------------------------------------------------------------->
+
+// Form gönderildiğinde toplam değeri kontrol eden fonksiyon
+document.getElementById("submitBtn").addEventListener("click", function (e) {
+  e.preventDefault(); // Sayfanın yeniden yüklenmesini engeller
+  disableSubmitButton(); // Butonu devre dışı bırak
+  showLoading(); // Yükleniyor göstergesini aç
+
+  const total = checkTotal(); // Toplamı hesapla ve kontrol et
+
+  if (total > 100) {
+    showError("Toplam değer 100'ü geçemez!"); // Hata mesajı göster
+    enableSubmitButton(); // Butonu tekrar etkinleştir
+    return; // İşlem durduruluyor
+  }
+
+  // Form verilerini `this` üzerinden değil, `scoreForm` kullanarak toplayın
+  const formElement = document.getElementById("scoreForm");
+  const formData = new FormData(formElement); // Form verilerini doğru şekilde topla
+
+  var inpP = {
+    f: "pjson",
+    Toplam_Nüfus_Skor_Katsayısı_Giriniz: 0.0,
+    Toplam_Erkek_Nüfus_Skor_Katsayı: 0.0,
+    Toplam_Kadın_Nüfus_Skor_Katsayısı_Giriniz: 0.0,
+    Alım_Gücü_Endeksi_Skor_Katsayısı_Giriniz: 0.0,
+    Toplam_Alım_Gücü_Skor_Katsayısı_Giriniz: 0.0,
+    Kişi_Başına_Alım_Gücü_Skor_Katsayısı_Giriniz: 0.0,
+    İşsiz_Nüfus_Skor_Katsayısı_Giriniz: 0.0,
+    Bekar_Nüfus_Skor_Katsayısı_Giriniz: 0.0,
+    Evli_Nüfus_Skor_Katsayısı_Giriniz: 0.0,
+    Boşanmış_Nüfus_Skor_Katsayısı_Giriniz: 0.0,
+    Dul_Nüfus_Skor_Katsayısı_Giriniz: 0.0,
+    Okuma_Yazma_Bilmeyen_Skor_Katsayısı_Giriniz: 0.0,
+    Okuma_Yazma_Bilen_Diplomasız_Skor_Katsayısı_Giriniz: 0.0,
+    İlkokul_Mezunu_Skor_Katsayısı_Giriniz: 0.0,
+    Lise_Mezunu_Skor_Katsayısı_Giriniz: 0.0,
+    Yüksek_Lisans_Mezunu_Skor_Katsayısı_Giriniz: 0.0,
+    Dokora_Mezunu_Skor_Katsayısı_Giriniz: 0.0,
+    Bilinmeyen_Eğitim_Durumu_Skor_Katsayısı_Giriniz: 0.0,
+    Gıda_İçecek_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Elektronik_Bilgisayar_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Kıyafet_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Alkollü_İçecek_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Ayakkabı_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Tütün_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Ev_Tekstili_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Mobilya_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Ev_Aletleri_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Ev_Bahçe_Malzemeleri_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Ev_Gereçleri_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Ev_Bakım_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Dayanıklı_Rekreasyon_Ürünleri_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Tıbbi_Ürün_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Şahsi_Bakım_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Şahsi_Eşya_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Kitap_Kırtasiye_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Yemek_Hizmetleri_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Eğlence_Hizmetleri_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    Oyuncak_Spor_Evcil_Hayvan_Harcaması_Skor_Katsayısı_Giriniz: 0.0,
+    İlkokula_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz: 0.0,
+    Liseye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz: 0.0,
+    Üniversiteye_Giden_Öğrenci_Sayısı_Skor_Katsayısı_Giriniz: 0.0,
+    Toplam_Erzak_Yardım_Sayısı_Skor_Katsayısı_Giriniz: 0.0,
+    Maski_Kesinti_Sayısı_Skor_Katsayısı_Giriniz: 0.0,
+  }; // Parametrelerin tutulduğu nesne
+
+ // Form verilerini inpP nesnesine ekle
+formData.forEach((value, key) => {
+    inpP[key] = parseFloat(value) || 0.0; // Değeri sayıya çevir, boş ise 0.0 yap
+});
+
+  // **Fetch ile Veri Gönderme**
+  fetch(
+    "https://harita.manisa.bel.tr/arcgis/rest/services/test/SkorHesaplama/GPServer/Model/submitJob",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams(inpP),
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.jobId) {
+        console.log(`Gönderildi: İşlem başarılı! Job ID: ${data.jobId}`);
+        checkJobStatus(data.jobId); // Tek seferlik iş durumu sorgulaması
+
+        // İş başarılı gönderildiğinde bekleme modalını gösterin
+        showModal("Gönderiliyor..", "İşlem devam ediyor, lütfen..", false);
+
+        // İş durumu kontrolünü başlat
+        checkJobStatus(data.jobId);
+      } else {
+        showError("Job ID bulunamadı!"); // Hata mesajı
+        enableSubmitButton(); // Hata durumunda butonu tekrar etkinleştir
+      }
+    })
+    .catch((error) => {
+      console.error("Hata:", error.message);
+      showModal("Hata", `Form gönderilirken hata oluştu: ${error.message}`);
+    })
+    .finally(() => {
+      hideLoading(); // Yükleniyor göstergesini kapat
+      enableSubmitButton(); // Butonu tekrar aktif et
+    });
+});
+
+// <-------------------------------------------------------------->
+
+// **Job Status Kontrol Fonksiyonu**
+function checkJobStatus(jobId) {
+  let elapsedTime = 0; // Geçen zamanı tutmak için değişken
+  const maxTime = 60000; // Maksimum 1 dakika (60 saniye) zaman aşımı
+
+  const intervalId = setInterval(() => {
+    // Eğer iş tamamlandıysa veya zaman aşımı gerçekleştiyse sorgulama durduruluyor
+    if (jobCompleted || elapsedTime >= maxTime) {
+      clearInterval(intervalId);
+      if (elapsedTime >= maxTime && !jobCompleted) {
+        console.log("Zaman aşımı gerçekleşti, kontrol sonlandırıldı.");
+        showModal("Hata", "İş durumu kontrolü zaman aşımına uğradı.");
+        enableSubmitButton(); // Zaman aşımında butonu tekrar etkinleştir
+      }
+      return; // İşlemi sonlandır
+    }
+
+    elapsedTime += 3000; // Her kontrol aralığını ekle
+    console.log(
+      `Job ID ile sorgulama yapılıyor: ${jobId}, Geçen süre: ${elapsedTime}`
+    );
+
+    fetch(
+      `https://harita.manisa.bel.tr/arcgis/rest/services/test/SkorHesaplama/GPServer/Model/jobs/${jobId}?f=pjson`,
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Sunucu hatası: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (jobCompleted) {
+          // Eğer job tamamlandıysa, başka bir işlem yapmadan dön yani true ise
+          return;
+        }
+
+        console.log("İş durumu yanıtı (JSON olarak işlenmiş):", data);
+
+        if (data && data.jobStatus) {
+          if (data.jobStatus === "esriJobSucceeded") {
+            console.log("İş başarılı, interval durduruldu.");
+            jobCompleted = true; // İş tamamlandı, değişkeni yani bayrağı güncelle
+            clearInterval(intervalId); // Timer'ı durdur
+            showModal("Gönderildi", "İşlem başarıyla tamamlandı!", true);
+            enableSubmitButton();
+            console.log(`İşlem başarılı! Job ID: ${data.jobId}`);
+          } else if (data.jobStatus === "esriJobFailed") {
+            console.log("İş başarısız, interval durduruluyor.");
+            jobCompleted = true; // İş başarısız, bayrağı güncelle
+            clearInterval(intervalId); // Timer'ı durdur
+            showModal("Hata", "İş başarısız oldu!", true);
+            enableSubmitButton();
+          } else {
+            console.log("İş durumu devam ediyor:", data.jobStatus);
+          }
+        } else {
+          console.error("Yanıtta beklenen jobStatus alanı bulunamadı:", data);
+          clearInterval(intervalId); // Yanıt doğru değilse sorgulamayı durdur
+          jobCompleted = true; // Hatalı durum, bayrağı güncelle
+          showModal(
+            "Hata",
+            "İş durumu yanıtı hatalı: jobStatus bilgisi alınamadı.",
+            true
+          );
+        }
+      })
+      .catch((error) => {
+        if (!jobCompleted) {
+          console.error("İş durumu sorgusunda hata:", error);
+          jobCompleted = true; // Hatalı durum, bayrağı güncelle
+          clearInterval(intervalId); // Hata oluştuğunda sorgulamayı durdur
+          showModal(
+            "Hata",
+            `İş durumu sorgusunda bir hata oluştu: ${error.message}`,
+            true
+          );
+        }
+      });
+  }, 3000); // Her 3 saniyede bir iş durumu kontrolü
+}
+
+// <-------------------------------------------------------------->
+
+// **Modals - Kullanıcıya Mesaj Göstermek için Fonksiyon**
+function showModal(title, message, isFinal = false) {
+  // Eski modal veya overlay varsa temizle
+  const existingModal = document.getElementById("modalOverlay");
+  const existingModalContent = document.querySelector(".modal");
+
+  if (existingModal) {
+    existingModal.remove(); // Eski overlay'i kaldır
+  }
+  if (existingModalContent) {
+    existingModalContent.remove(); // Eski modal içeriğini kaldır
+  }
+
+  // Gönder butonunu devre dışı bırak (Modal açıldığında)
+  disableSubmitButton();
+
+  // Yeni overlay ve modal oluştur
+  const overlay = document.createElement("div");
+  overlay.id = "modalOverlay";
+  overlay.classList.add("modal-overlay"); // CSS dosyasındaki sınıf
+  overlay.style.display = "block"; // Overlay'i görünür yap
+  document.body.appendChild(overlay);
+
+  const modal = document.createElement("div");
+  modal.classList.add("modal"); // CSS dosyasındaki sınıf
+  modal.innerHTML = `
+    <div class="modal-header"><h2>${title}</h2></div>
+    <div class="modal-body"><p>${message}</p></div>
+    <div class="modal-footer">
+      ${
+        isFinal
+          ? '<button id="closeModalBtn" tabindex="0">Tamam</button>'
+          : '<span id="loadingDots">Bekleyiniz...</span>'
+      }
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Eğer işlem sonlandıysa, "Tamam" butonunu kontrol edip işleme alalım
+  if (isFinal) {
+    const closeButton = document.getElementById("closeModalBtn");
+    if (closeButton) {
+      closeButton.focus(); // Butonun odaklanmasını sağla
+      closeButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // Tıklama olayının modal dışında bir yerde kapanmayı tetiklemesini engelle
+        console.log("Modal kapatma butonuna tıklandı");
+        clearTimeout(closeTimeout); // Timeout'u temizle
+        closeModal(modal, overlay); // Modalı kapat
+        enableSubmitButton(); // Modal kapandığında gönder butonunu tekrar aktif hale getir
+      });
+    } else {
+      console.log("Tamam butonu oluşturulmadı, isFinal yanlış olabilir");
+    }
+  } else {
+    const loadingDots = document.getElementById("loadingDots");
+    let dotCount = 0;
+    setInterval(() => {
+      dotCount = (dotCount + 1) % 4;
+      loadingDots.textContent = "Bekleyiniz" + ".".repeat(dotCount);
+    }, 500);
+  }
+}
+
+// **Modal Kapatma Fonksiyonu**
+function closeModal(modal, overlay) {
+  if (modal) modal.remove();
+  if (overlay) overlay.remove();
+  console.log("Modal kapatıldı ve sayfa yenileniyor"); // Hata ayıklama için log
+  location.reload(); // Sayfayı yenile
+}
+
+// <-------------------------------------------------------------->
+
+// **Yükleniyor Göstergesi Fonksiyonları**
+function showLoading() {
+  const loadingDiv = document.createElement("div");
+  loadingDiv.id = "loadingSpinner";
+  loadingDiv.innerHTML = `
+    <div class="loading-spinner">
+      <p>İşlem devam ediyor... Lütfen bekleyiniz.</p>
+    </div>
+  `;
+  document.body.appendChild(loadingDiv);
+
+  // Kontrol panelini gizle
+  const controlPanel = document.getElementById("fixedControlPanel");
+  if (controlPanel) {
+    controlPanel.style.display = "none";
+  }
+}
+
+function hideLoading() {
+  const loadingDiv = document.getElementById("loadingSpinner");
+  if (loadingDiv) {
+    loadingDiv.remove();
+  }
+}
+
+// Kontrol panelini yeniden göster
+const controlPanel = document.getElementById("fixedControlPanel");
+if (controlPanel) {
+  controlPanel.style.display = "block";
+}
+
+// <-------------------------------------------------------------->
+
+// Gönder butonunu devre dışı bırakma fonksiyonu
+function disableSubmitButton() {
+  const submitButton = document.getElementById("submitBtn");
+  if (submitButton) {
+    submitButton.disabled = true; // Butonu devre dışı bırak
+    submitButton.innerText = "Gönderiliyor..."; // Buton metnini güncelle
+  }
+}
+
+function enableSubmitButton() {
+  const submitButton = document.getElementById("submitBtn");
+  if (submitButton) {
+    submitButton.disabled = false; // Butonu tekrar aktif hale getir
+    submitButton.innerText = "Çalıştır"; // Buton metnini eski haline döndür
+  }
+}
+
+// Sayfa yüklendiğinde toplam değeri kontrol etmek için
+window.addEventListener("DOMContentLoaded", function () {
+  checkTotal(); // Sayfa yüklendiğinde toplamı kontrol eder
+});
+
+// <-------------------------------------------------------------->
+        </script>
+  </body>
+</html>

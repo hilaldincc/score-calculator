@@ -1,0 +1,258 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e9ecef;
+  margin: 20px;
+  color: #333;
+}
+
+form {
+  max-width: 800px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  position: relative; /* Formu tam hizalamak için */
+}
+
+h1 {
+  font-size: 28px;
+  color: #363636; /* Başlık rengini #363636 yaptık */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-row {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #495057;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+input[type="range"] {
+  width: 50%;
+  margin-top: 10px;
+  appearance: none;
+  height: 5px;
+  background: #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  background-color: #ff6347;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background-color: #ff6347;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-thumb {
+  background-color: #ff6347;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.slider-value {
+  font-size: 16px;
+  color: #6c757d;
+  margin-left: 10px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background-color: #cd853f; /* Buton rengi */
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  left: 0; /* Sol hizalama */
+}
+
+button:hover {
+  background-color: #ee9a00; /* Üstüne gelince buton rengi */
+  box-shadow: 0px 4px 8px rgba(205, 133, 63, 0.3);
+}
+
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Hata Mesajı Stil */
+#error-message {
+  display: none; /* Varsayılan olarak gizli */
+  background-color: #ffdddd;
+  color: #d8000c;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #d8000c;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  animation: fade-in 0.3s ease-in-out;
+}
+
+/* Hata mesajının ortaya çıkışı için animasyon */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Overlay için stil */
+#modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Koyu arka plan */
+  z-index: 999; /* Modalın altında olmalı */
+  display: none; /* Varsayılan olarak gizli */
+}
+
+/* Modal kutusu için stil */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f9f9f9; /* Hafif gri arka plan */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1000; /* Modal overlay'in üstünde olmalı */
+  width: 300px;
+  max-width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal başlık stili */
+.modal-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #333;
+}
+
+/* Modal alt kısım stili */
+.modal-footer {
+  margin-top: 20px;
+}
+
+.modal-footer button {
+  background-color: #cd853f; /* Gönder butonuyla aynı renk */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-footer button:hover {
+  background-color: #ee9a00; /* Gönder butonunun hover rengiyle aynı */
+  box-shadow: 0px 4px 8px rgba(205, 133, 63, 0.3);
+}
+
+/* Fade-in animasyonu */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+#fixedControlPanel {
+  position: fixed;
+  right: 20px;
+  top: 50%; /* Paneli ekranın üstünden aşağıya ortalar */
+  transform: translateY(-50%); /* Ortalanmış panel için denge sağlar */
+  width: 250px; /* Genişliği artırdım */
+  padding: 15px; /* Dolguyu artırarak içerik için daha fazla yer sağladım */
+  background-color: #f1f1f1;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 1000;
+  text-align: center;
+}
+
+/* Kontrol Paneli Karartılmış Stil */
+#fixedControlPanel.dimmed {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff; /* Karartma sırasında yazı rengini beyaz yaparak görünürlüğü artır */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Yumuşak geçiş */
+}
+
+#progress {
+  margin-top: 10px;
+  font-size: 16px; /* Biraz daha büyük yaptım */
+  font-weight: bold;
+  color: #495057;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#panel-message {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5; /* Satır yüksekliğini artırdım */
+  overflow: hidden;
+  white-space: normal; /* Normal olarak ayarladım, satırlar gerektiğinde kaydırılacak */
+  text-align: center;
+}
+
+/* Hata ve Başarı Mesajları */
+#panel-message.error {
+  color: #d8000c;
+}
+
+#panel-message.success {
+  color: #28a745;
+}
